@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        window.onload=function(){
+            var mv=document.getElementById("mv");
+            x=1;
+            y=1;
+            var btn1=document.getElementById("btn1").onclick=function(){
+                clearInterval(id)
+                if(x==1||x==-1){
+                    x=0;
+                    y=0;
+                }else{
+                    x=1;
+                    y=1;
+                }
+                var id= window.setInterval(function(){
+                    old_left=parseInt(mv.style.left)
+                    old_top=parseInt(mv.style.top)
+
+                    left_n=1000;
+                    top_n=700;
+                    if(old_left==left_n){
+                        x=-1;
+                        left_n=800
+                    }
+                    if(old_left==0){
+                        x=1;
+                       top_n=600
+                    }
+                    if(old_top==top_n){
+                       left_n=1000
+                        y=-1;
+                    }
+                    if(old_top==0){
+                        top_n=700
+                        y=1;
+                    }
+                    mv.style.left=(old_left+10*x)+"px";
+                    mv.style.top=(old_top+10*y)+"px";
+                },100);
+            }
+        }
+    </script>
+</head>
+<body>
+    <button id="btn1">点击</button>
+    <hr>
+    <img src="D:\OneDrive\桌面\tupian\干杯.png" alt="" id="mv" style="position: absolute;left: 20px;top: 100px;width: 200px;height: 200px;">
+</body>
+</html>
