@@ -1,0 +1,101 @@
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>Document</title>  
+    <style>  
+        #pic_box {
+            width: 987px;
+            height: 347px;
+            margin: 0 auto;
+        }
+
+        #box {
+            width: 987px;
+            height: 80px;
+            margin: 0 auto;
+            border: 1px solid red;
+            position: relative;
+        }
+
+        #box #text {
+            color: red;
+            font-size: 24px;
+            position: absolute;
+            top: 6px;
+            left: 150px;
+        }
+
+        #box ul {
+            position: absolute;
+            top: -5px;
+            left: 330px;
+        }
+
+        #box ul li {
+            width: 60px;
+            height: 60px;
+            border: 1px solid blue;
+            text-align: center;
+            line-height: 60px;
+            list-style: none;
+            float: left;
+            margin-left: 10px;
+        } 
+    </style>  
+</head>  
+<body>  
+    <div id="pic_box">  
+        <img src="images/pic.PNG" alt="">  
+    </div>  
+  
+    <div id="box">  
+        <p id="text">距离本场秒杀结束：</p>  
+        <ul>  
+            <li id="d">00天</li>  
+            <li id="h">00时</li>  
+            <li id="m">00分</li>  
+            <li id="s">00秒</li>  
+        </ul>  
+    </div>  
+  
+    <script>  
+        window.onload = function () {  
+            var countdownDate = new Date("2024-05-20 00:00:00").getTime();  
+  
+            var x = setInterval(function() {  
+  
+                // 获取当前时间  
+                var now = new Date().getTime();  
+  
+                // 计算时间差  
+                var distance = countdownDate - now;  
+  
+                // 计算天、小时、分钟和秒  
+                var days = Math.floor(distance / (1000 * 60 * 60 * 24));  
+                var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));  
+                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));  
+                var seconds = Math.floor((distance % (1000 * 60)) / 1000);  
+  
+                // 更新时间显示  
+                document.getElementById("d").innerHTML = days.toString().padStart(2, '0') + "天";  
+                document.getElementById("h").innerHTML = hours.toString().padStart(2, '0') + "时";  
+                document.getElementById("m").innerHTML = minutes.toString().padStart(2, '0') + "分";  
+                document.getElementById("s").innerHTML = seconds.toString().padStart(2, '0') + "秒";  
+  
+                // 如果倒计时结束  
+                if (distance < 0) {  
+                    clearInterval(x);  
+                    document.getElementById("text").innerHTML = "秒杀已结束";  
+                    document.getElementById("d").innerHTML = "00天";  
+                    document.getElementById("h").innerHTML = "00时";  
+                    document.getElementById("m").innerHTML = "00分";  
+                    document.getElementById("s").innerHTML = "00秒";  
+                }  
+            }, 1000);  
+        };  
+    </script>  
+</body>  
+</html>

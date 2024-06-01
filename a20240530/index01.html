@@ -1,0 +1,45 @@
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>Document</title>  
+    <style>  
+        ul {  
+            margin: 100px auto;  
+            border: 1px solid green;  
+            width: 1000px;  
+            height: 100px; /* 初始高度 */  
+            overflow: hidden;  
+        }  
+        ul li {  
+            width: 300px;  
+            height: 100px;  
+            background-color: violet;  
+            float: left;  
+            margin-left: 20px;  
+        }  
+    </style>  
+    <script>  
+        window.onload = function() {  
+            var box_obj = document.getElementById("box");  
+            var h = parseInt(window.getComputedStyle(box_obj).height); // 使用getComputedStyle获取实际高度  
+            var heightInterval = setInterval(function() {  
+                h = h - 10;  
+                if (h <= 0) { // 如果高度小于等于0，则停止定时器  
+                    clearInterval(heightInterval);  
+                    h = 0;  
+                }  
+                box_obj.style.height = h + "px"; // 使用box_obj而不是box  
+            }, 1000);  
+        }  
+    </script>  
+</head>  
+<body>  
+    <ul id="box">  
+        <li></li>  
+        <li></li>  
+        <li></li>  
+    </ul>  
+</body>  
+</html>

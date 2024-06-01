@@ -1,0 +1,92 @@
+<!DOCTYPE html>  
+<html lang="en">  
+  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>省份城市的三级联动</title>  
+    <script>  
+        window.onload = function () {  
+            // 省份数组  
+            var provinceArr = ['上海', '江苏', '河北'];  
+            // 城市数组（与省份索引对应）  
+            var cityArr = [  
+                ['上海市'],  
+                ['苏州市', '南京市', '扬州市'],  
+                ['石家庄', '秦皇岛', '张家口']  
+            ];  
+            // 区域数组（与省份和城市索引对应）  
+            var countryArr = [  
+                [  
+                    ['黄浦区', '静安区', '长宁区', '浦东区']  
+                ],  
+                [  
+                    ['苏州市-区域1', '苏州市-区域2'],   
+                    ['南京市-区域1', '南京市-区域2'],  
+                    ['扬州市-区域1', '扬州市-区域2']  
+                ],  
+                [  
+                    ['石家庄市-区域1', '石家庄市-区域2'],  
+                    ['秦皇岛市-区域1', '秦皇岛市-区域2'],  
+                    ['张家口市-区域1', '张家口市-区域2']  
+                ]  
+            ];  
+  
+            // 创建下拉列表选项的函数  
+            function createOption(obj, data) {  
+                obj.options.length = 0; // 清空原有选项  
+                for (var i = 0; i < data.length; i++) {  
+                    var op = new Option(data[i], i); // 创建option，使用索引作为value  
+                    obj.options.add(op);  
+                }  
+            }  
+  
+            // 初始化省份下拉列表  
+            var province = document.getElementById('province');  
+            createOption(province, provinceArr);  
+  
+            // 省份改变时更新城市下拉列表  
+            province.onchange = function () {  
+                var provinceIndex = this.value; // 获取选中的省份索引  
+                var citySelect = document.getElementById('city');  
+                createOption(citySelect, cityArr[provinceIndex]); // 更新城市下拉列表  
+  
+                // 同时清空区域下拉列表  
+                var countrySelect = document.getElementById('country');  
+                countrySelect.options.length = 0;  
+  
+                
+                if (citySelect.options.length > 0) {  
+                   
+                    citySelect.selectedIndex = 0;  
+                    // 可以手动触发city的onchange事件  
+                    var event = new Event('change');  
+                    citySelect.dispatchEvent(event);  
+                }  
+            };  
+  
+            // 城市改变时更新区域下拉列表  
+            var city = document.getElementById('city');  
+            city.onchange = function () {  
+                var cityIndex = this.value; // 获取选中的城市索引  
+                var provinceIndex = document.getElementById('province').value; // 获取省份索引  
+                var countrySelect = document.getElementById('country');  
+                createOption(countrySelect, countryArr[provinceIndex][cityIndex]); // 更新区域下拉列表  
+            };  
+  
+            // 初始化城市和区域下拉列表（这里初始为空，等待省份选择）  
+            var city = document.getElementById('city');  
+            var country = document.getElementById('country');  
+            createOption(city, []);  
+            createOption(country, []);  
+        };  
+    </script>  
+</head>  
+  
+<body>  
+    <select id="province"></select>  
+    <select id="city"></select>  
+    <select id="country"></select>  
+</body>  
+  
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        window.onload = function () {
+            var btn = document.getElementById("btn");
+            var n = 60;
+            btn.onclick = function () {
+                btn.disabled = true;
+                var timer1 = window.setInterval(function () {
+                    btn.innerHTML = "还剩下" + (n--) + "秒"
+                    if (n < 0) {
+                        window.clearInterval(timer1);
+                        btn.innerHTML = "点击发送"
+                        btn.disabled = false;
+                    }
+                }, 100)
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <span>手机号：</span>
+    <input type="text">
+    <button id="btn">点击发送</button>
+    <script>
+
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        p {
+            font-size: 30px;
+            height: 300px;
+            line-height: 300px;
+            text-align: center;
+        }
+
+        #num {
+            font-size: 50px;
+            color: red;
+        }
+    </style>
+</head>
+<script>
+    window.onload = function () {
+        var obj = document.getElementById("num");
+        n = 3;
+        var T1=window.setInterval(function () {
+            obj.innerHTML = n--;
+            if (n == 0) {
+                window.location.href = "https://map.ark-nights.com/areas";
+                clearInterval(T1);
+
+            }
+        }, 1000)
+    }
+</script>
+
+<body>
+    <p>
+        <span id="num"></span> 后跳转 <a href="https://map.ark-nights.com/areas">也可以点击此处直接跳转</a>
+    </p>
+</body>
+
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        window.onload = function () {
+            var pic = document.getElementById("pic")
+            var btn1 = document.getElementById("btn1").onclick = function () {
+                pic.style.display = "block";
+            }
+            var btn2 = document.getElementById("btn2").onclick = function () {
+
+                pic.style.display = "none";
+            }
+            var btn3=document.getElementById("btn3").onclick=function(){
+                if(getComputedStyle(pic,null).getPropertyValue('display')=="none"){
+                    pic.style.display = "block";
+                }else{
+                    pic.style.display = "none";
+                }
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <button id="btn1">显示</button>
+    <button id="btn2">藏</button>
+    <button id="btn3">显示/隐藏</button>
+    <img src="D:\OneDrive\桌面\tupian\投降.jpg" alt="" id="pic" style="display: block;width: 150px;height: 150px;">
+</body>
+
+</html>

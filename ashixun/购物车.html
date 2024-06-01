@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>简易购物车</title>
+    <style>
+        /* 基础样式 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        #cart-container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* 购物车标题 */
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* 购物车项 */
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 10px;
+        }
+
+        .cart-checkbox {
+            margin-right: 10px;
+        }
+
+        .product-checkbox-label {
+            display: flex;
+            align-items: center;
+        }
+
+        .product-name {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .quantity {
+            margin-right: 10px;
+        }
+
+        .price {
+            color: green;
+        }
+
+        /* 删除按钮 */
+        .remove-item {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        /* 减少按钮 */
+        .reduce-item {
+            border: none;
+            padding: 5px 10px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        /* 增加按钮 */
+        .increase-item {
+            border: none;
+            padding: 5px 10px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .remove-item:hover {
+            background-color: #da190b;
+        }
+
+        /* 购物车总计 */
+        #cart-summary {
+            border-top: 2px solid #ddd;
+            padding-top: 10px;
+            margin-top: 20px;
+            text-align: right;
+        }
+
+        #cart-summary p {
+            margin: 0;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // 获取商品和总计的DOM元素    
+            var cartItems = document.querySelectorAll('.cart-item');
+            var totalQuantity = document.getElementById('total-quantity');
+            var totalPrice = document.getElementById('total-price');
+
+
+            // 初始化总计    
+            var quantity = 0;
+            var price = 0;
+
+            
+
+            // 遍历所有商品项以添加事件监听器  
+            cartItems.forEach(function (item) {
+                // 为每个商品的复选框添加事件监听器    
+                var checkbox = item.querySelector('.cart-checkbox');
+                var reduceButton = item.querySelector('.reduce-item');
+                var increasesButton = item.querySelector('.increase-item');
+                // 禁用增加和减少按钮的初始函数  
+                function disableButtons() {
+                    reduceButton.disabled = true;
+                    increasesButton.disabled = true;
+                }
+
+                // 启用增加和减少按钮的初始函数  
+                function enableButtons() {
+                    reduceButton.disabled = false;
+                    increasesButton.disabled = false;
+                }
+
+                checkbox.addEventListener('change', function () {
+                    var priceElement = item.querySelector('.price');
+                    var quantityElement = item.querySelector('.quantity');
+
+
+                    // 如果商品被选中，则将其价格和数量添加到总计中,  
+                    if (this.checked) {
+                        enableButtons();
+                        quantity += parseInt(quantityElement.textContent.split(': ')[1]);
+                        price += parseFloat(priceElement.textContent.replace('$', '')) * parseInt(quantityElement.textContent.split(': ')[1]);
+
+
+                    } else {
+                        // 如果商品被取消选中，则从总计中减去其价格和数量
+                        disableButtons();
+                        if (quantity -= parseInt(quantityElement.textContent.split(': ')[1]) <= 0) {
+                            quantity = 0;
+                        } else if (quantity !== 0) {
+                            quantity -= parseInt(quantityElement.textContent.split(': ')[1]);
+
+                        }
+                        if (price -= parseFloat(priceElement.textContent.replace('$', '')) <= 0) {
+                            price = 0;
+                        } else if (price !== 0) {
+                            price -= parseFloat(priceElement.textContent.replace('$', ''));
+                        }
+
+                    }
+
+                    // 更新总计    
+                    totalQuantity.textContent = quantity;
+                    totalPrice.textContent = '$' + price.toFixed(2);
+                });
+                // 为- +按钮添加事件监听器
+
+                reduceButton.addEventListener('click', function () {
+
+
+                    var quantityElement = item.querySelector('.quantity');
+                    var count = parseInt(quantityElement.textContent.split(': ')[1]);
+                    if (count == 1) {
+
+                    } else {
+                        count -= 1;
+                        quantityElement.innerHTML = "数量: " + count + "";
+                    }
+                    // 更新总计  
+                    totalQuantity.textContent = quantity;
+                    totalPrice.textContent = '$' + price.toFixed(2);
+
+                })
+
+
+                increasesButton.addEventListener('click', function () {
+
+
+                    var quantityElement = item.querySelector('.quantity');
+                    var count = parseInt(quantityElement.textContent.split(': ')[1]);
+                    var priceElement = item.querySelector('.price')
+
+
+                    count += 1;
+                    quantityElement.innerHTML = "数量: " + count + "";
+
+
+                })
+
+                // 为删除按钮添加事件监听器    
+                var removeButton = item.querySelector('.remove-item');
+                removeButton.addEventListener('click', function () {
+
+                    // 如果商品被选中，则取消选中  
+                    if (checkbox.checked) {
+                        checkbox.checked = false;
+                        var quantityElement = item.querySelector('.quantity');
+
+
+                        // 从总计中减去商品的价格和数量  
+                        var priceElement = item.querySelector('.price');
+
+                        price -= parseFloat(priceElement.textContent.replace('$', '')) * parseInt(quantityElement.textContent.split(': ')[1]);
+                        quantity -= parseInt(quantityElement.textContent.split(': ')[1]);
+
+                        // 更新DOM以反映更改  
+                        item.remove();
+                    } else {
+                        item.remove();
+                    }
+
+
+                    // 更新总计  
+                    totalQuantity.textContent = quantity;
+                    totalPrice.textContent = '$' + price.toFixed(2);
+                });
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <div id="cart-container">
+        <h2>购物车</h2>
+        <div class="cart-item" data-id="1">
+            <input type="checkbox" class="cart-checkbox" id="item-1-checkbox">
+            <label for="item-1-checkbox" class="product-checkbox-label">
+                <span class="product-name">商品1</span>
+
+                <span class="price">$10</span>
+
+            </label>
+            <button class="reduce-item">-</button>
+            <span class="quantity">数量: 1</span>
+            <button class="increase-item">+</button>
+
+            <button class="remove-item">删除</button>
+        </div>
+        <div class="cart-item" data-id="2">
+            <input type="checkbox" class="cart-checkbox" id="item-1-checkbox">
+            <label for="item-1-checkbox" class="product-checkbox-label">
+                <span class="product-name">商品2</span>
+
+                <span class="price">$20</span>
+
+            </label>
+            <button class="reduce-item">-</button>
+            <span class="quantity">数量: 1</span>
+            <button class="increase-item">+</button>
+
+            <button class="remove-item">删除</button>
+        </div>
+        <div class="cart-item" data-id="3">
+            <input type="checkbox" class="cart-checkbox" id="item-1-checkbox">
+            <label for="item-1-checkbox" class="product-checkbox-label">
+                <span class="product-name">商品3</span>
+
+                <span class="price">$17</span>
+
+            </label>
+            <button class="reduce-item">-</button>
+            <span class="quantity">数量: 1</span>
+            <button class="increase-item">+</button>
+
+            <button class="remove-item">删除</button>
+        </div>
+        <div class="cart-item" data-id="4">
+            <input type="checkbox" class="cart-checkbox" id="item-1-checkbox">
+            <label for="item-1-checkbox" class="product-checkbox-label">
+                <span class="product-name">商品4</span>
+
+                <span class="price">$3</span>
+
+            </label>
+            <button class="reduce-item">-</button>
+            <span class="quantity">数量: 1</span>
+            <button class="increase-item">+</button>
+
+            <button class="remove-item">删除</button>
+        </div>
+        <div class="cart-item" data-id="5">
+            <input type="checkbox" class="cart-checkbox" id="item-1-checkbox">
+            <label for="item-1-checkbox" class="product-checkbox-label">
+                <span class="product-name">商品5</span>
+
+                <span class="price">$15</span>
+
+            </label>
+            <button class="reduce-item">-</button>
+            <span class="quantity">数量: 1</span>
+            <button class="increase-item">+</button>
+
+            <button class="remove-item">删除</button>
+        </div>
+        <!-- 复制上面的 cart-item 来添加更多商品 -->
+
+        <div id="cart-summary">
+            <p>已选商品数量: <span id="total-quantity">0</span></p>
+            <p>总计: <span id="total-price">$0</span></p>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>
+        <span>手机号码：</span><input type="text"><button id="btn">发送</button>
+    </div>
+
+    <script>
+        var btn = document.getElementById('btn')
+        btn.onclick = function () {
+            btn.disabled = true;
+            var n = 5;
+            var timer1 = window.setInterval(function () {
+                if (n == 0) {
+                    clearInterval(timer1);
+                    btn.disabled = false;
+                    btn.innerHTML = "发送";
+                } else {
+                    btn.innerHTML = "还剩下" + n + "秒";
+                    n--;
+                }
+
+
+            }, 1000);
+
+        }
+
+
+
+    </script>
+</body>
+
+</html>
